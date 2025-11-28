@@ -32,7 +32,7 @@ def index(request):
 @login_required
 def assign_to_car(request, pk):
     car = get_object_or_404(Car, pk=pk)
-    driver = getattr(request.user, "driver", None)
+    driver = request.user
     if driver and driver not in car.drivers.all():
         car.drivers.add(driver)
     return redirect("taxi:car-detail", pk=pk)
@@ -41,7 +41,7 @@ def assign_to_car(request, pk):
 @login_required
 def unassign_from_car(request, pk):
     car = get_object_or_404(Car, pk=pk)
-    driver = getattr(request.user, "driver", None)
+    driver = request.user
     if driver and driver in car.drivers.all():
         car.drivers.remove(driver)
     return redirect("taxi:car-detail", pk=pk)
